@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  client:
+    build: ./client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/usr/app
+      - /usr/app/node_modules
+
+  backend:
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+
+    build: ./server
+    depends_on:
+      - db
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    volumes:
+      - ./server:/usr/app
+      - /usr/app/node_modules
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
