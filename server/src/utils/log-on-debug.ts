@@ -1,6 +1,6 @@
 import { CONFIG } from "../config";
 
-export const logOnDebug = (message?: any): void => {
-  if (CONFIG.DEBUG) console.log(message);
+export const logOnDebug = (...messages: any[]): void => {
+  if (CONFIG.DEBUG) console.log(...messages);
   return;
 };

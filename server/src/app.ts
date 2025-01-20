@@ -3,6 +3,10 @@ import { CONFIG } from "./config";
 import { logOnDebug } from "./utils/log-on-debug";
 import cors from "cors";
 import { json } from "body-parser";
+import { pgClient } from "./database/init";
+import { notfoundMiddleware } from "./middlewares/not-found";
+import { errorMiddleware } from "./middlewares/error";
+import { orderRoutes } from "./features/orders/route";
 
 const app = express();
 
@@ -14,6 +18,20 @@ app.use(
   })
 );
 
-app.get("/", (req: any, res: any, next: any) => res.send("hello there"));
+app.use("/api", orderRoutes);
 
-app.listen(CONFIG.PORT, () => logOnDebug(`Server listen on port ${CONFIG.PORT}`));
+app.use("/*", notfoundMiddleware);
+
+app.use(errorMiddleware);
+
+const startUp = async () => {
+  try {
+    await pgClient.connect();
+    logOnDebug(`Server listen on port ${CONFIG.PORT}`);
+  } catch (err) {
+    logOnDebug("Database connection error ", err);
+    process.exit(0);
+  }
+};
+
+app.listen(CONFIG.PORT, startUp);
