@@ -1,14 +1,19 @@
 import { logOnDebug } from "../../../utils/log-on-debug";
 import { pgClient } from "../../init";
 
-export type OrderItemType = "Food" | "Drink";
+export type OrderItemTypeType = "Food" | "Drink";
+
+export enum OrderItemType {
+  "Food" = "Food",
+  "Drink" = "Drink",
+}
 
 export interface StoredOrderItem {
   id: number;
   created_at: Date;
-  comment?: string;
   title: string;
   price: number;
+  comment?: string;
   order_id: number;
   type: OrderItemType;
 }

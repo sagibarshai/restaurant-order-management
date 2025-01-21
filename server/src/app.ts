@@ -6,7 +6,7 @@ import { json } from "body-parser";
 import { pgClient } from "./database/init";
 import { notfoundMiddleware } from "./middlewares/not-found";
 import { errorMiddleware } from "./middlewares/error";
-import { orderRoutes } from "./features/orders/route";
+import { ordersRoutes } from "./features/orders";
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(
   })
 );
 
-app.use("/api", orderRoutes);
+app.use("/api", ordersRoutes);
 
 app.use("/*", notfoundMiddleware);
 
