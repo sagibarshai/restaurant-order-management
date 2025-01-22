@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { OrderStatusType } from "./types";
+import { OrderStatus } from "./types";
 
 export interface GetNotDeliveredOrderRequest extends AxiosRequestConfig {
   url: "/order";
@@ -7,10 +7,10 @@ export interface GetNotDeliveredOrderRequest extends AxiosRequestConfig {
 }
 
 export interface UpdateOrderStatusRequest extends AxiosRequestConfig {
-  url: "/order";
+  url: "/order/status/update";
   method: "patch";
   data: {
-    status: OrderStatusType;
+    status: keyof typeof OrderStatus;
     id: number;
   };
 }

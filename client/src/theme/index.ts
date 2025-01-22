@@ -7,6 +7,7 @@ export const theme: DefaultTheme = {
         white: "#FFFFFF",
         pink: "#EDB7ED",
         lightGray: "#FAF5F5",
+        aqua: "rgba(7, 137, 179, 0.7)",
       },
       texts: {
         primary: "rgba(0, 0, 0, 0.8)",

@@ -3,13 +3,8 @@ import { StyledTable, StyledTableBody, StyledTableHead, StyledTableHeaderRow, St
 
 interface CustomCell {
   cellText: string | number | boolean;
-  connectedToHeader?: string;
   onClick?: (index: number) => void;
-  dropDown?: {
-    options: string[];
-    value: string;
-    onchange: (value: string) => void;
-  };
+  element?: JSX.Element;
 }
 
 export interface AppTableProps {
@@ -35,7 +30,9 @@ const AppPrimaryTable: React.FC<AppTableProps> = ({ tableData }) => {
         {tableData[0].children.map((_, rowIndex) => (
           <StyledTableRow isOdd={rowIndex % 2 !== 0} key={rowIndex}>
             {tableData.map((col) => (
-              <StyledTd key={`${col.head}-${rowIndex}`}>{col.children[rowIndex]?.cellText}</StyledTd>
+              <StyledTd key={`${col.head}-${rowIndex}`}>
+                {col.children[rowIndex]?.element ? col.children[rowIndex]?.element : col.children[rowIndex]?.cellText}
+              </StyledTd>
             ))}
           </StyledTableRow>
         ))}

@@ -5,26 +5,27 @@ import { serverAxiosInstance } from "../api/server/axios-instence";
 export interface Props<TRequest extends AxiosRequestConfig> {
   url: string;
   method: Method;
-  data?: TRequest["data"]; // Use data from TRequest
+  data?: TRequest["data"];
 }
 
 interface ReturnedTypes<TResponse> {
-  fetchData: () => void;
+  fetchData: <TRequest extends AxiosRequestConfig>(requestConfig: Props<TRequest>) => Promise<TResponse | undefined>;
   data: TResponse | null;
   error: unknown | null;
   loading: boolean;
 }
 
-export const useAppRequest = <TRequest extends AxiosRequestConfig, TResponse>(requestConfig: Props<TRequest>): ReturnedTypes<TResponse> => {
+export const useAppRequest = <TResponse>(): ReturnedTypes<TResponse> => {
   const [data, setData] = useState<TResponse | null>(null);
   const [error, setError] = useState<unknown | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async <TRequest extends AxiosRequestConfig>(requestConfig: Props<TRequest>): Promise<TResponse | undefined> => {
     try {
       setLoading(true);
       const response = await serverAxiosInstance(requestConfig);
       setData(response.data);
+      return response.data;
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err?.response?.data) setError(err.response.data);
@@ -32,7 +33,7 @@ export const useAppRequest = <TRequest extends AxiosRequestConfig, TResponse>(re
     } finally {
       setLoading(false);
     }
-  }, [requestConfig]);
+  }, []);
 
   return { fetchData, data, error, loading };
 };

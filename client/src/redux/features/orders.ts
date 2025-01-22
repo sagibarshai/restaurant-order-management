@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Order {
+  id: number;
   title: string;
   status: string;
-  location: [number, number];
+  location: { x: number; y: number };
   customerPhone: string;
   customerName: string;
   orderItems: {
@@ -15,20 +16,31 @@ interface Order {
   }[];
 }
 
-type OrderData = Order | null;
+type OrdersData = Order[];
 
-const initialState: Order | null = null as OrderData;
+const initialState: OrdersData = [];
 
 export const orderSlice = createSlice({
   name: "order-slice",
   initialState,
   reducers: {
-    setOrders: (state: OrderData, action: PayloadAction<OrderData>) => {
-      return action.payload;
+    setOrders: (state: OrdersData, action: PayloadAction<OrdersData>) => {
+      state = action.payload;
+      return state;
+    },
+
+    updateOrder: (state: OrdersData, action: PayloadAction<{ order: Order }>) => {
+      const { order } = action.payload;
+      const existingOrderIndex = state.findIndex((o) => o.id === order.id); // Assuming 'id' is the unique identifier
+
+      if (existingOrderIndex !== -1) {
+        state[existingOrderIndex] = { ...state[existingOrderIndex], ...order };
+      }
+      return state;
     },
   },
 });
 
-export const { setOrders } = orderSlice.actions;
+export const { setOrders, updateOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;

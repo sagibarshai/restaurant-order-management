@@ -1,9 +1,14 @@
-export type OrderStatusType = "Received" | "Preparing" | "Ready" | "EnRoute" | "Delivered";
-
+export enum OrderStatus {
+  Received = "Received",
+  Preparing = "Preparing",
+  Ready = "Ready",
+  EnRoute = "EnRoute",
+  Delivered = "Delivered",
+}
 export type Order = {
   id: number;
   title: string;
-  status: OrderStatusType;
+  status: OrderStatus;
   location: {
     x: number;
     y: number;
