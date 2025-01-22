@@ -1,20 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Order {
-  id: number;
-  title: string;
-  status: string;
-  location: { x: number; y: number };
-  customerPhone: string;
-  customerName: string;
-  orderItems: {
-    title: string;
-    price: number;
-    type: string;
-    comment?: string;
-    itemsAddons?: { title: string; price: number; comment?: string }[];
-  }[];
-}
+import { Order } from "../../api/server/orders/types";
 
 type OrdersData = Order[];
 

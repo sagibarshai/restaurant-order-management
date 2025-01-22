@@ -13,6 +13,7 @@ export type Order = {
     x: number;
     y: number;
   };
+  createdAt: Date;
   customerPhone: string;
   customerName: string;
   orderItems: {

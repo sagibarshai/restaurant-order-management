@@ -12,8 +12,6 @@ export interface AppTableProps {
     head: string;
     children: CustomCell[];
   }[];
-
-  tableTitle: string;
 }
 
 const AppPrimaryTable: React.FC<AppTableProps> = ({ tableData }) => {

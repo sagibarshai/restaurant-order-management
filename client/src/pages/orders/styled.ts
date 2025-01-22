@@ -37,7 +37,7 @@ export const StyledOrderPageSubtitle = styled.h4`
 
 export const StyledInputsWrapper = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spaces.xl};
+  gap: 125px;
   align-items: center;
   justify-content: left;
 `;
