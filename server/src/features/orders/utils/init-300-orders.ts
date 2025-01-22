@@ -12,9 +12,9 @@ export const init300OrdersIfNotExists = async () => {
     if (renderCounts === 0) {
       renderCounts = 1;
 
-      // check if there is 300 items on db
+      // check if there is 300 items on db (extra check)
       const before = await GetAllNotDeliveredOrdersWithItemsAndAddons();
-      if (before.length === 300) return;
+      if (before.length >= 300) return;
 
       for (let order of MOCKS_FULLY_ORDERS) {
         await createFullOrderAsTransaction(order);
