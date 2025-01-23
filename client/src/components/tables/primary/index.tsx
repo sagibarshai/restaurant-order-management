@@ -37,7 +37,12 @@ const AppPrimaryTable = <T extends { id: number }>({ tableData, selectedId }: Ap
             }}
           >
             {tableData.map((col) => (
-              <StyledTd key={`${col.head}-${rowIndex}`}>
+              <StyledTd
+                key={`${col.head}-${rowIndex}`}
+                onClick={(e) => {
+                  if (col.children[rowIndex]?.element) e.stopPropagation();
+                }}
+              >
                 {col.children[rowIndex]?.element ? col.children[rowIndex]?.element : col.children[rowIndex]?.cellText}
               </StyledTd>
             ))}

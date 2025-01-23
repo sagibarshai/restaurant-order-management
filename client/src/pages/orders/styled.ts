@@ -59,3 +59,8 @@ export const StyledOrderDetailsWrapper = styled.div`
   width: 25%;
   height: 100%;
 `;
+export const StyledInfoWrapper = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spaces.s};
+  align-items: center;
+`;

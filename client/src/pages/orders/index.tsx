@@ -3,6 +3,7 @@ import { Order, OrderStatus } from "../../api/server/orders/types";
 import AppPrimaryTable, { AppTableProps } from "../../components/tables/primary";
 import { useAppRequest } from "../../hooks/use-request";
 import {
+  StyledInfoWrapper,
   StyledInputsWrapper,
   StyledOrderDetailsWrapper,
   StyledOrderPageContent,
@@ -13,7 +14,7 @@ import {
   StyledTableWrapper,
 } from "./styled";
 import { GetNotDeliveredOrderRequest, UpdateOrderStatusRequest } from "../../api/server/orders/requests";
-import { IconMagnifyingGlass, IconPizza } from "../../icons";
+import { IconInfo, IconMagnifyingGlass, IconPizza } from "../../icons";
 import AppTextInput, { InputProps } from "../../components/inputs/text";
 import { useInput } from "../../hooks/use-input";
 import AppDropdown from "../../components/inputs/dropdown";
@@ -250,6 +251,10 @@ const OrderPage: React.FC = () => {
               />
             </div>
           </StyledInputsWrapper>
+          <StyledInfoWrapper>
+            <IconInfo size={24} color="black" />
+            Click on the row to show items
+          </StyledInfoWrapper>
           <StyledTableAndInfoWrapper>
             <StyledTableWrapper showInfo={selectedOrder !== null}>
               <AppPrimaryTable selectedId={selectedOrder?.id || -1} tableData={tableData} />
