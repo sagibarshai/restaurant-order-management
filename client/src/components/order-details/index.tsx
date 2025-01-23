@@ -1,5 +1,5 @@
 import { Order } from "../../api/server/orders/types";
-import { StyledOrderDetailsWrapper, StyledKeyValueRow, StyledCloseButton } from "./styled";
+import { StyledOrderDetailsWrapper, StyledKeyValueRow, StyledCloseButton, StyledTitle, StyledStrong } from "./styled";
 
 interface OrderDetailsProps {
   order: Order;
@@ -10,7 +10,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onClose }) => {
   return (
     <StyledOrderDetailsWrapper>
       <StyledCloseButton onClick={onClose}>X</StyledCloseButton>
-      <h2>Order Details</h2>
+      <StyledTitle>Order Details</StyledTitle>
       <hr />
 
       <StyledKeyValueRow>
@@ -19,21 +19,21 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onClose }) => {
 
       <hr />
       {/* Display Items */}
-      <h3>Items</h3>
+      <StyledTitle>Items</StyledTitle>
       {order.orderItems?.map((item, index) => (
         <div key={index + item.title}>
           <StyledKeyValueRow>
-            <strong>{`#${index + 1}`} Item:</strong> {item.title}
+            <StyledStrong>{`#${index + 1}`} Item:</StyledStrong> {item.title}
           </StyledKeyValueRow>
           <StyledKeyValueRow>
-            <strong>Price:</strong> ${item.price}
+            <StyledStrong>Price:</StyledStrong> ${item.price}
           </StyledKeyValueRow>
           <StyledKeyValueRow>
-            <strong>Type:</strong> {item.type}
+            <StyledStrong>Type:</StyledStrong> {item.type}
           </StyledKeyValueRow>
           {item.comment && (
             <StyledKeyValueRow>
-              <strong>Item Comment:</strong> {item.comment}
+              <StyledStrong>Item Comment:</StyledStrong> {item.comment}
             </StyledKeyValueRow>
           )}
           {/* Display Addons for each item */}
@@ -41,7 +41,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onClose }) => {
             <>
               {item.itemsAddons?.map((addon, addonIndex) => (
                 <StyledKeyValueRow key={addonIndex + addon.title}>
-                  <strong>{`#${addonIndex + 1}`} Topping:</strong> {addon.title} - ${addon.price}
+                  <StyledStrong>{`#${addonIndex + 1}`} Topping:</StyledStrong> {addon.title} - ${addon.price}
                 </StyledKeyValueRow>
               ))}
             </>

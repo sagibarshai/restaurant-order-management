@@ -37,3 +37,15 @@ export const StyledCloseButton = styled.button`
   width: 36px;
   align-self: end;
 `;
+
+export const StyledTitle = styled.h2`
+  color: ${({ theme }) => theme.palette.colors.texts.primary};
+`;
+
+export const StyledSubtitle = styled.h3`
+  color: ${({ theme }) => theme.palette.colors.texts.primary};
+`;
+
+export const StyledStrong = styled.strong`
+  color: ${({ theme }) => theme.palette.colors.texts.primary};
+`;
