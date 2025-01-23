@@ -64,3 +64,14 @@ export const StyledInfoWrapper = styled.div`
   gap: ${({ theme }) => theme.spaces.s};
   align-items: center;
 `;
+
+export const StyledSortWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const StyledSortLabel = styled.label`
+  font-size: ${({ theme }) => theme.fonts.sizes.text};
+  color: ${({ theme }) => theme.palette.colors.texts.primary};
+  font-weight: 500;
+  padding-left: 4px;
+`;

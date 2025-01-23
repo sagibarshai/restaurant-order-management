@@ -40,9 +40,9 @@ export const StyledInput = styled.input`
     font-weight: 300;
   }
   border: 1px solid lightgray;
-  border-radius: 6px;
+  border-radius: 100px;
   padding-right: 32px;
-  text-indent: 4px;
+  text-indent: 12px;
 `;
 
 export const StyledInputError = styled.span`

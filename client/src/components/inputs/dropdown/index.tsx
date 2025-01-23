@@ -5,18 +5,16 @@ interface DropdownProps {
   value: string;
   onChange: (value: string) => void;
   options: { value: string; label?: string; backgroundColor?: string }[];
-  label?: string;
   backgroundColor?: string;
 }
 
-const AppDropdown: React.FC<DropdownProps> = ({ value, onChange, options, label = "", backgroundColor }) => {
+const AppDropdown: React.FC<DropdownProps> = ({ value, onChange, options, backgroundColor }) => {
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value);
   };
 
   return (
     <StyledDropdownWrapper>
-      <StyledDropdownTitle>{label}</StyledDropdownTitle>
       <StyledDropdown value={value} onChange={handleChange} backgroundcolor={backgroundColor}>
         {options.map(({ value, label, backgroundColor }) => (
           <StyledOption key={value} value={value} optionbackgroundcolor={backgroundColor}>

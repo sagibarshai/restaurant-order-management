@@ -10,6 +10,8 @@ import {
   StyledOrderPageSubtitle,
   StyledOrderPageTitle,
   StyledOrderPageWrapper,
+  StyledSortLabel,
+  StyledSortWrapper,
   StyledTableAndInfoWrapper,
   StyledTableWrapper,
 } from "./styled";
@@ -237,9 +239,9 @@ const OrderPage: React.FC = () => {
           </div>
           <StyledInputsWrapper>
             <AppTextInput stateProps={searchState} staticsProps={staticsSearch} />
-            <div>
+            <StyledSortWrapper>
+              <StyledSortLabel>Sort</StyledSortLabel>
               <AppDropdown
-                label="Sort"
                 options={[
                   { value: "Date", label: "Date" },
                   { value: "Items amount", label: "Items amount" },
@@ -249,7 +251,7 @@ const OrderPage: React.FC = () => {
                 onChange={(value) => setSortBy(value as any)}
                 value={sortBy}
               />
-            </div>
+            </StyledSortWrapper>
           </StyledInputsWrapper>
           <StyledInfoWrapper>
             <IconInfo size={24} color="black" />

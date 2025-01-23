@@ -26,7 +26,7 @@ export const StyledDropdown = styled.select<{ backgroundcolor?: string }>`
         `}
 
   appearance: none;
-  font-weight: bold;
+
   border-radius: 24px;
   cursor: pointer;
   padding-right: 30px;
