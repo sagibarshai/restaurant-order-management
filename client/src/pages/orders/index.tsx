@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { formatDistanceToNow } from "date-fns";
 import { theme } from "../../theme";
 import OrderDetails from "../../components/order-details";
+import { CONFIG } from "../../config";
 
 const formatTimeAgo = (date: Date | string): string => {
   const parsedDate = typeof date === "string" ? new Date(date) : date;
@@ -82,7 +83,7 @@ const OrderPage: React.FC = () => {
     // Set interval to run every x seconds
     const intervalId = setInterval(() => {
       fetchAndUpdateRedux();
-    }, 5000);
+    }, CONFIG.AUTO_FETCH_ORDERS_TIME);
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
