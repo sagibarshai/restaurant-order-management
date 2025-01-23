@@ -41,3 +41,21 @@ export const StyledInputsWrapper = styled.div`
   align-items: center;
   justify-content: left;
 `;
+
+export const StyledTableAndInfoWrapper = styled.div`
+  display: grid;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+`;
+export const StyledTableWrapper = styled.div<{ showInfo: boolean }>`
+  width: ${({ showInfo }) => (showInfo ? "75%" : "100%")};
+  height: 100%;
+  transition: all 0.3s;
+`;
+
+export const StyledOrderDetailsWrapper = styled.div`
+  width: 25%;
+  height: 100%;
+`;

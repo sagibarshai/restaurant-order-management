@@ -1,20 +1,22 @@
 import styled, { css } from "styled-components";
 import { StyledTable, StyledTableBody, StyledTableHead, StyledTableHeaderRow, StyledTableRow, StyledTd } from "./styled";
 
-interface CustomCell {
+interface CustomCell<T extends { id: number }> {
   cellText: string | number | boolean;
-  onClick?: (index: number) => void;
+  onClick?: (payload: T) => void;
   element?: JSX.Element;
+  payload?: T;
 }
 
-export interface AppTableProps {
+export interface AppTableProps<T extends { id: number }> {
   tableData: {
     head: string;
-    children: CustomCell[];
+    children: CustomCell<T>[];
   }[];
+  selectedId?: number;
 }
 
-const AppPrimaryTable: React.FC<AppTableProps> = ({ tableData }) => {
+const AppPrimaryTable = <T extends { id: number }>({ tableData, selectedId }: AppTableProps<T>) => {
   return (
     <StyledTable>
       <thead>
@@ -25,8 +27,15 @@ const AppPrimaryTable: React.FC<AppTableProps> = ({ tableData }) => {
         </StyledTableHeaderRow>
       </thead>
       <StyledTableBody>
-        {tableData[0].children.map((_, rowIndex) => (
-          <StyledTableRow isOdd={rowIndex % 2 !== 0} key={rowIndex}>
+        {tableData[0].children.map((item, rowIndex) => (
+          <StyledTableRow
+            isSelected={item.payload?.id === selectedId}
+            isOdd={rowIndex % 2 !== 0}
+            key={rowIndex}
+            onClick={() => {
+              item.onClick ? item.onClick(item.payload as T) : () => {};
+            }}
+          >
             {tableData.map((col) => (
               <StyledTd key={`${col.head}-${rowIndex}`}>
                 {col.children[rowIndex]?.element ? col.children[rowIndex]?.element : col.children[rowIndex]?.cellText}

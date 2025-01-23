@@ -27,12 +27,14 @@ export const StyledTableHead = styled.th`
   width: 100%;
 `;
 
-export const StyledTableRow = styled.tr<{ isOdd: boolean }>`
+export const StyledTableRow = styled.tr<{ isOdd: boolean; isSelected: boolean }>`
   display: table;
   width: 100%;
   table-layout: fixed;
   overflow: hidden;
   background-color: ${({ theme, isOdd }) => (isOdd ? theme.palette.colors.backgrounds.lightGray : "")};
+  border: ${({ isSelected, theme }) => (isSelected ? `3px solid ${theme.palette.colors.backgrounds.pink}` : "")};
+  cursor: pointer;
 `;
 
 export const StyledTd = styled.td`

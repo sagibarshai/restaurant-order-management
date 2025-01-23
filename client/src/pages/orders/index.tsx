@@ -2,7 +2,16 @@ import { useEffect, useState, useCallback } from "react";
 import { Order, OrderStatus } from "../../api/server/orders/types";
 import AppPrimaryTable, { AppTableProps } from "../../components/tables/primary";
 import { useAppRequest } from "../../hooks/use-request";
-import { StyledInputsWrapper, StyledOrderPageContent, StyledOrderPageSubtitle, StyledOrderPageTitle, StyledOrderPageWrapper } from "./styled";
+import {
+  StyledInputsWrapper,
+  StyledOrderDetailsWrapper,
+  StyledOrderPageContent,
+  StyledOrderPageSubtitle,
+  StyledOrderPageTitle,
+  StyledOrderPageWrapper,
+  StyledTableAndInfoWrapper,
+  StyledTableWrapper,
+} from "./styled";
 import { GetNotDeliveredOrderRequest, UpdateOrderStatusRequest } from "../../api/server/orders/requests";
 import { IconMagnifyingGlass, IconPizza } from "../../icons";
 import AppTextInput, { InputProps } from "../../components/inputs/text";
@@ -12,6 +21,7 @@ import { setOrders, updateOrder } from "../../redux/features/orders";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { formatDistanceToNow } from "date-fns";
 import { theme } from "../../theme";
+import OrderDetails from "../../components/order-details";
 
 const formatTimeAgo = (date: Date | string): string => {
   const parsedDate = typeof date === "string" ? new Date(date) : date;
@@ -36,8 +46,8 @@ const getStatusBackgroundColor = (status: OrderStatus): string => {
 const OrderPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const orders = useAppSelector((state) => state.orders);
-
-  const [tableData, setTableData] = useState<AppTableProps["tableData"] | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [tableData, setTableData] = useState<AppTableProps<Order>["tableData"] | null>(null);
   const [searchState, setSearchState, staticsSearch] = useInput<InputProps>({
     stateProps: {
       value: "",
@@ -85,30 +95,56 @@ const OrderPage: React.FC = () => {
     }
   }, [orders]);
 
-  const transformDataToTableData = (data: Order[]): AppTableProps["tableData"] => {
+  const transformDataToTableData = (data: Order[]): AppTableProps<Order>["tableData"] => {
     return [
       {
         head: "Order Id",
-        children: data.map((order) => ({ cellText: order.id })),
+        children: data.map((order) => ({
+          cellText: order.id,
+          payload: order,
+          onClick(payload) {
+            setSelectedOrder(payload);
+          },
+        })),
       },
       {
         head: "Items Count",
         children: data.map((order) => ({
           cellText: order.orderItems.length,
+          payload: order,
+          onClick(payload) {
+            setSelectedOrder(payload);
+          },
         })),
       },
       {
         head: "Customer Name",
-        children: data.map((order) => ({ cellText: order.customerName })),
+        children: data.map((order) => ({
+          cellText: order.customerName,
+          payload: order,
+          onClick(payload) {
+            setSelectedOrder(payload);
+          },
+        })),
       },
       {
         head: "Customer Phone",
-        children: data.map((order) => ({ cellText: order.customerPhone })),
+        children: data.map((order) => ({
+          cellText: order.customerPhone,
+          payload: order,
+          onClick(payload) {
+            setSelectedOrder(payload);
+          },
+        })),
       },
       {
         head: "Status",
         children: data.map((order) => ({
+          payload: order,
           cellText: order.status,
+          onClick(payload) {
+            setSelectedOrder(payload);
+          },
           element: (
             <AppDropdown
               backgroundColor={getStatusBackgroundColor(order.status)}
@@ -127,12 +163,20 @@ const OrderPage: React.FC = () => {
         head: "Received at",
         children: data.map((order) => ({
           cellText: formatTimeAgo(order.createdAt),
+          payload: order,
+          onClick(payload) {
+            setSelectedOrder(payload);
+          },
         })),
       },
       {
         head: "Comment",
         children: data.map((order) => ({
           cellText: order.comment || "N/A",
+          payload: order,
+          onClick(payload) {
+            setSelectedOrder(payload);
+          },
         })),
       },
     ];
@@ -175,6 +219,10 @@ const OrderPage: React.FC = () => {
     setTableData(transformDataToTableData(sorted));
   }, [sortBy, orders, searchState.value]);
 
+  const onCloseOrderDetails = () => {
+    setSelectedOrder(null);
+  };
+
   return (
     <StyledOrderPageWrapper>
       {tableData?.length ? (
@@ -201,8 +249,16 @@ const OrderPage: React.FC = () => {
               />
             </div>
           </StyledInputsWrapper>
-
-          <AppPrimaryTable tableData={tableData} />
+          <StyledTableAndInfoWrapper>
+            <StyledTableWrapper showInfo={selectedOrder !== null}>
+              <AppPrimaryTable selectedId={selectedOrder?.id || -1} tableData={tableData} />
+            </StyledTableWrapper>
+            {selectedOrder ? (
+              <StyledOrderDetailsWrapper>
+                <OrderDetails onClose={onCloseOrderDetails} order={selectedOrder} />
+              </StyledOrderDetailsWrapper>
+            ) : null}
+          </StyledTableAndInfoWrapper>
         </StyledOrderPageContent>
       ) : (
         "Loading data..."
