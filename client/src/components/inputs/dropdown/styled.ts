@@ -19,9 +19,11 @@ export const StyledDropdown = styled.select<{ backgroundcolor?: string }>`
     backgroundcolor
       ? css`
           background-color: ${backgroundcolor};
+          color: black;
         `
       : css`
-          background-color: none;
+          background-color: white;
+          color: black;
           border: 2px solid ${theme.palette.colors.backgrounds.aqua};
         `}
 

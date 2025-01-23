@@ -12,7 +12,6 @@ const AppDropdown: React.FC<DropdownProps> = ({ value, onChange, options, backgr
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value);
   };
-
   return (
     <StyledDropdownWrapper>
       <StyledDropdown value={value} onChange={handleChange} backgroundcolor={backgroundColor}>

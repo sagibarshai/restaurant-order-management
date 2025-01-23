@@ -1,4 +1,48 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+
+// Keyframes for showing the element
+const showAnimation = keyframes`
+  from {
+    width: 0;
+    opacity: 0;
+    display: none;
+  }
+  to {
+    width: 25%;
+    opacity: 1;
+    display: block;
+  }
+`;
+
+// Keyframes for hiding the element
+const hideAnimation = keyframes`
+  from {
+    width: 25%;
+    opacity: 1;
+    display: block;
+  }
+  to {
+    width: 0;
+    opacity: 0;
+    display: none;
+  }
+`;
+
+export const StyledOrderDetailsWrapper = styled.div<{ showinfo: 1 | 0 }>`
+  ${({ showinfo }) =>
+    showinfo === 1
+      ? css`
+          animation: ${showAnimation} 0.3s;
+          width: 25%;
+        `
+      : css`
+          animation: ${hideAnimation} 0.1s forwards;
+          animation-delay: 1s;
+        `};
+
+  height: 100%;
+  overflow: hidden;
+`;
 
 export const StyledOrderPageWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.colors.backgrounds.white};
@@ -55,14 +99,11 @@ export const StyledTableWrapper = styled.div<{ showinfo: 1 | 0 }>`
   transition: all 0.3s;
 `;
 
-export const StyledOrderDetailsWrapper = styled.div`
-  width: 25%;
-  height: 100%;
-`;
 export const StyledInfoWrapper = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spaces.s};
   align-items: center;
+  color: ${({ theme }) => theme.palette.colors.texts.primary};
 `;
 
 export const StyledSortWrapper = styled.div`

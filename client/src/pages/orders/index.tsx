@@ -244,7 +244,7 @@ const OrderPage: React.FC = () => {
               <AppPrimaryTable selectedId={selectedOrder?.id || -1} tableData={tableData} />
             </StyledTableWrapper>
             {selectedOrder ? (
-              <StyledOrderDetailsWrapper>
+              <StyledOrderDetailsWrapper showinfo={selectedOrder !== null ? 1 : 0}>
                 <OrderDetails onClose={onCloseOrderDetails} order={selectedOrder} />
               </StyledOrderDetailsWrapper>
             ) : null}
