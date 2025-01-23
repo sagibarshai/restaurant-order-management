@@ -9,6 +9,13 @@ declare module "styled-components" {
           pink: string;
           lightGray: string;
           aqua: string;
+          status: {
+            Received: string;
+            Preparing: string;
+            Ready: string;
+            EnRoute: string;
+            Delivered: string;
+          };
         };
         texts: {
           primary: string;

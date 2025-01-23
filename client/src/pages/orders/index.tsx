@@ -10,6 +10,28 @@ import { useInput } from "../../hooks/use-input";
 import AppDropdown from "../../components/inputs/dropdown";
 import { setOrders, updateOrder } from "../../redux/features/orders";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { formatDistanceToNow } from "date-fns";
+import { theme } from "../../theme";
+
+const formatTimeAgo = (date: Date | string): string => {
+  const parsedDate = typeof date === "string" ? new Date(date) : date;
+  return formatDistanceToNow(parsedDate, { addSuffix: true }).replace("about ", "");
+};
+
+const getStatusBackgroundColor = (status: OrderStatus): string => {
+  switch (status) {
+    case OrderStatus.Received:
+      return theme.palette.colors.backgrounds.status.Received; // Received
+    case OrderStatus.Preparing:
+      return theme.palette.colors.backgrounds.status.Preparing; //Preparing
+    case OrderStatus.Ready:
+      return theme.palette.colors.backgrounds.status.Ready; // Ready
+    case OrderStatus.EnRoute:
+      return theme.palette.colors.backgrounds.status.EnRoute; // EnRoute
+    case OrderStatus.Delivered:
+      return theme.palette.colors.backgrounds.status.Delivered; // Delivered
+  }
+};
 
 const OrderPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -81,7 +103,12 @@ const OrderPage: React.FC = () => {
           cellText: order.status,
           element: (
             <AppDropdown
-              options={Object.values(OrderStatus)}
+              backgroundColor={getStatusBackgroundColor(order.status)}
+              options={Object.values(OrderStatus).map((status) => ({
+                label: status,
+                value: status,
+                backgroundColor: getStatusBackgroundColor(status),
+              }))}
               onChange={(value) => onUpdateOrderStatus(value as OrderStatus, order)}
               value={order.status}
             />
@@ -89,9 +116,15 @@ const OrderPage: React.FC = () => {
         })),
       },
       {
-        head: "Location",
+        head: "Received at",
         children: data.map((order) => ({
-          cellText: `Lat: ${order.location.x}, Lon: ${order.location.y}`,
+          cellText: formatTimeAgo(order.createdAt),
+        })),
+      },
+      {
+        head: "Comment",
+        children: data.map((order) => ({
+          cellText: order.comment || "N/A",
         })),
       },
     ];
@@ -149,7 +182,7 @@ const OrderPage: React.FC = () => {
             <div>
               <AppDropdown
                 label="Sort"
-                options={["Date", "Items amount", "Order Id", "None"]}
+                options={["Date", "Items amount", "Order Id", "None"].map((item) => ({ label: item, value: item }))}
                 onChange={(value) => setSortBy(value as any)}
                 value={sortBy}
               />

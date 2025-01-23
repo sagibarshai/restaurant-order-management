@@ -19,6 +19,7 @@ export const createFullOrderAsTransaction = async (order: CreateFullOrder): Prom
       location: order.location,
       status: order.status,
       title: order.title,
+      comment: order.comment,
     });
     // build the return order
     (returnedOrder["id"] = newOrder.id), (returnedOrder["createdAt"] = newOrder["createdAt"]);

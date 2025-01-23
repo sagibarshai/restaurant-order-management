@@ -50,6 +50,8 @@ LEFT JOIN (
 ) sub_addons ON oi.id = sub_addons.order_item_id
 ${id ? `WHERE o.id = ${id}` : `WHERE o.status != 'Delivered'`}
 GROUP BY o.id
+ORDER BY o.created_at DESC
+
         `);
     const rows = response.rows as ReturnedFullOrder[];
 

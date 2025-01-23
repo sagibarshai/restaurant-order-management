@@ -8,6 +8,13 @@ export const theme: DefaultTheme = {
         pink: "#EDB7ED",
         lightGray: "#FAF5F5",
         aqua: "rgba(7, 137, 179, 0.7)",
+        status: {
+          Delivered: "#A9D08E",
+          EnRoute: "#C0E1F6",
+          Preparing: "#FFE59F",
+          Ready: "#D4EDBD",
+          Received: "#FFC8AA",
+        },
       },
       texts: {
         primary: "rgba(0, 0, 0, 0.8)",

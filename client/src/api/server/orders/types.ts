@@ -16,6 +16,7 @@ export type Order = {
   createdAt: Date;
   customerPhone: string;
   customerName: string;
+  comment?: string;
   orderItems: {
     title: string;
     price: number;
