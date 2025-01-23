@@ -1,6 +1,5 @@
-import { Order } from "../../api/server/orders/types"; // Updated import for OrderStatus
+import { Order } from "../../api/server/orders/types";
 import { StyledOrderDetailsWrapper, StyledKeyValueRow, StyledCloseButton } from "./styled";
-import { add, format } from "date-fns";
 
 interface OrderDetailsProps {
   order: Order;

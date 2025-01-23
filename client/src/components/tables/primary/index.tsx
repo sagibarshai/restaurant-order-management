@@ -1,4 +1,3 @@
-import styled, { css } from "styled-components";
 import { StyledTable, StyledTableBody, StyledTableHead, StyledTableHeaderRow, StyledTableRow, StyledTd } from "./styled";
 
 interface CustomCell<T extends { id: number }> {

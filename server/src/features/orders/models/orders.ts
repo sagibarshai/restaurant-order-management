@@ -31,8 +31,8 @@ export const storedOrdersToReturnOrders = (storedOrders: StoredOrder[]): Returne
 
 export const CreateNewOrderModel = async (order: CreateOrder): Promise<ReturnedOrder> => {
   try {
-    const [latitude, longitude] = order.location; // Assuming location is an array [latitude, longitude]
-    const location = `(${latitude}, ${longitude})`; // Format as "(latitude, longitude)"
+    const [latitude, longitude] = order.location;
+    const location = `(${latitude}, ${longitude})`;
 
     const response = await pgClient.query(
       `INSERT INTO orders 

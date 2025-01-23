@@ -2,6 +2,16 @@ import { useEffect, useState, useCallback } from "react";
 import { Order, OrderStatus } from "../../api/server/orders/types";
 import AppPrimaryTable, { AppTableProps } from "../../components/tables/primary";
 import { useAppRequest } from "../../hooks/use-request";
+
+import { GetNotDeliveredOrderRequest, UpdateOrderStatusRequest } from "../../api/server/orders/requests";
+import { IconInfo, IconMagnifyingGlass, IconPizza } from "../../icons";
+import AppTextInput, { InputProps } from "../../components/inputs/text";
+import { useInput } from "../../hooks/use-input";
+import AppDropdown from "../../components/inputs/dropdown";
+import { setOrders, updateOrder } from "../../redux/features/orders";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import OrderDetails from "../../components/order-details";
+import { CONFIG } from "../../config";
 import {
   StyledInfoWrapper,
   StyledInputsWrapper,
@@ -15,43 +25,17 @@ import {
   StyledTableAndInfoWrapper,
   StyledTableWrapper,
 } from "./styled";
-import { GetNotDeliveredOrderRequest, UpdateOrderStatusRequest } from "../../api/server/orders/requests";
-import { IconInfo, IconMagnifyingGlass, IconPizza } from "../../icons";
-import AppTextInput, { InputProps } from "../../components/inputs/text";
-import { useInput } from "../../hooks/use-input";
-import AppDropdown from "../../components/inputs/dropdown";
-import { setOrders, updateOrder } from "../../redux/features/orders";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { formatDistanceToNow } from "date-fns";
-import { theme } from "../../theme";
-import OrderDetails from "../../components/order-details";
-import { CONFIG } from "../../config";
-
-const formatTimeAgo = (date: Date | string): string => {
-  const parsedDate = typeof date === "string" ? new Date(date) : date;
-  return formatDistanceToNow(parsedDate, { addSuffix: true }).replace("about ", "");
-};
-
-const getStatusBackgroundColor = (status: OrderStatus): string => {
-  switch (status) {
-    case OrderStatus.Received:
-      return theme.palette.colors.backgrounds.status.Received; // Received
-    case OrderStatus.Preparing:
-      return theme.palette.colors.backgrounds.status.Preparing; //Preparing
-    case OrderStatus.Ready:
-      return theme.palette.colors.backgrounds.status.Ready; // Ready
-    case OrderStatus.EnRoute:
-      return theme.palette.colors.backgrounds.status.EnRoute; // EnRoute
-    case OrderStatus.Delivered:
-      return theme.palette.colors.backgrounds.status.Delivered; // Delivered
-  }
-};
+import { formatTimeAgo } from "../../utils/dates";
+import { getStatusBackgroundColor } from "../../utils/order-status";
 
 const OrderPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const orders = useAppSelector((state) => state.orders);
+
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [tableData, setTableData] = useState<AppTableProps<Order>["tableData"] | null>(null);
+  const [sortBy, setSortBy] = useState<"Date" | "Items amount" | "Order Id" | "None">("None");
+
   const [searchState, setSearchState, staticsSearch] = useInput<InputProps>({
     stateProps: {
       value: "",
@@ -67,37 +51,13 @@ const OrderPage: React.FC = () => {
     },
   });
 
-  const [sortBy, setSortBy] = useState<"Date" | "Items amount" | "Order Id" | "None">("None");
-
+  // requests actions
   const getAllNotDeliveredOrdersRequest = useAppRequest<Order[]>();
   const updateOrderStatus = useAppRequest<Order>();
 
-  useEffect(() => {
-    const fetchAndUpdateRedux = async () => {
-      const fetchedOrders = await getAllNotDeliveredOrdersRequest.fetchData<GetNotDeliveredOrderRequest>({ method: "GET", url: "/order" });
-      if (fetchedOrders) {
-        dispatch(setOrders(fetchedOrders));
-      }
-    };
-
-    // Run for the first time
-    fetchAndUpdateRedux();
-
-    // Set interval to run every x seconds
-    const intervalId = setInterval(() => {
-      fetchAndUpdateRedux();
-    }, CONFIG.AUTO_FETCH_ORDERS_TIME);
-
-    // Cleanup function to clear the interval when the component unmounts
-    return () => clearInterval(intervalId);
+  const filterOrdersBySearch = useCallback((orders: Order[], searchValue: string): Order[] => {
+    return orders.filter((order) => JSON.stringify(order).toLowerCase().includes(searchValue.toLowerCase()));
   }, []);
-
-  useEffect(() => {
-    if (orders) {
-      const customTableData = transformDataToTableData(orders as Order[]);
-      setTableData(customTableData);
-    }
-  }, [orders]);
 
   const transformDataToTableData = (data: Order[]): AppTableProps<Order>["tableData"] => {
     return [
@@ -186,23 +146,37 @@ const OrderPage: React.FC = () => {
     ];
   };
 
-  const filterOrdersBySearch = useCallback((orders: Order[], searchValue: string): Order[] => {
-    return orders.filter((order) => JSON.stringify(order).toLowerCase().includes(searchValue.toLowerCase()));
+  const onCloseOrderDetails = () => {
+    setSelectedOrder(null);
+  };
+
+  useEffect(() => {
+    const fetchAndUpdateRedux = async () => {
+      const fetchedOrders = await getAllNotDeliveredOrdersRequest.fetchData<GetNotDeliveredOrderRequest>({ method: "GET", url: "/order" });
+      if (fetchedOrders) {
+        dispatch(setOrders(fetchedOrders));
+      }
+    };
+
+    // Run for the first time
+    fetchAndUpdateRedux();
+
+    // Set interval to run every x seconds
+    const intervalId = setInterval(() => {
+      fetchAndUpdateRedux();
+    }, CONFIG.AUTO_FETCH_ORDERS_TIME);
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, []);
 
-  const onUpdateOrderStatus = async (status: keyof typeof OrderStatus, order: Order) => {
-    const updatedOrder = await updateOrderStatus.fetchData<UpdateOrderStatusRequest>({
-      method: "patch",
-      url: "/order/status/update",
-      data: {
-        id: order.id,
-        status,
-      },
-    });
-    if (updatedOrder) {
-      dispatch(updateOrder({ order: updatedOrder }));
+  useEffect(() => {
+    // set data for table
+    if (orders) {
+      const customTableData = transformDataToTableData(orders as Order[]);
+      setTableData(customTableData);
     }
-  };
+  }, [orders]);
 
   useEffect(() => {
     let sorted = [...orders];
@@ -223,8 +197,16 @@ const OrderPage: React.FC = () => {
     setTableData(transformDataToTableData(sorted));
   }, [sortBy, orders, searchState.value]);
 
-  const onCloseOrderDetails = () => {
-    setSelectedOrder(null);
+  const onUpdateOrderStatus = async (status: keyof typeof OrderStatus, order: Order) => {
+    const updatedOrder = await updateOrderStatus.fetchData<UpdateOrderStatusRequest>({
+      method: "patch",
+      url: "/order/status/update",
+      data: {
+        id: order.id,
+        status,
+      },
+    });
+    if (updatedOrder) dispatch(updateOrder({ order: updatedOrder }));
   };
 
   return (

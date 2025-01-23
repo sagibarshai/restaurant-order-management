@@ -16,7 +16,7 @@ export const orderSlice = createSlice({
 
     updateOrder: (state: OrdersData, action: PayloadAction<{ order: Order }>) => {
       const { order } = action.payload;
-      const existingOrderIndex = state.findIndex((o) => o.id === order.id); // Assuming 'id' is the unique identifier
+      const existingOrderIndex = state.findIndex((o) => o.id === order.id);
 
       if (existingOrderIndex !== -1) {
         state[existingOrderIndex] = { ...state[existingOrderIndex], ...order };

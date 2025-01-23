@@ -36,7 +36,7 @@ export const CreateNewItemAddonModel = async (orderItemId: ReturnedOrderItem["id
 
     const storedItemAddon = response.rows[0] as StoredItemAddon;
 
-    return storedItemsAddonsToReturnItemAddons([storedItemAddon])[0]; // Convert and return the stored addon
+    return storedItemsAddonsToReturnItemAddons([storedItemAddon])[0];
   } catch (err) {
     throw err;
   }

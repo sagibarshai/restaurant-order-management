@@ -29,5 +29,3 @@ export const getAllNotDeliveredOrders = async (req: Request, res: Response, next
     next(err);
   }
 };
-
-// 115352

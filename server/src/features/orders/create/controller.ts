@@ -6,7 +6,7 @@ import { CreateItemAddon } from "../models/items-addons";
 import { createFullOrderAsTransaction } from "../utils/create-full-order";
 
 export interface CreateFullOrder extends CreateOrder {
-  orderItems: (CreateOrderItem & { itemsAddons?: CreateItemAddon[] })[]; // Using intersection to add itemsAddons
+  orderItems: (CreateOrderItem & { itemsAddons?: CreateItemAddon[] })[];
 }
 
 export interface CreateFullOrderRequest extends Request {

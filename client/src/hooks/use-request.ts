@@ -1,4 +1,4 @@
-import axios, { Method, AxiosRequestConfig, AxiosError } from "axios";
+import { Method, AxiosRequestConfig, AxiosError } from "axios";
 import { useCallback, useState } from "react";
 import { serverAxiosInstance } from "../api/server/axios-instence";
 
