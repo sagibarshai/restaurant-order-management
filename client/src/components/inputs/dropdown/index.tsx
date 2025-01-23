@@ -4,7 +4,7 @@ import { StyledDropdown, StyledDropdownTitle, StyledDropdownWrapper, StyledIconW
 interface DropdownProps {
   value: string;
   onChange: (value: string) => void;
-  options: { value: string; label: string; backgroundColor?: string }[];
+  options: { value: string; label?: string; backgroundColor?: string }[];
   label?: string;
   backgroundColor?: string;
 }
@@ -20,7 +20,7 @@ const AppDropdown: React.FC<DropdownProps> = ({ value, onChange, options, label 
       <StyledDropdown value={value} onChange={handleChange} backgroundColor={backgroundColor}>
         {options.map(({ value, label, backgroundColor }) => (
           <StyledOption key={value} value={value} optionBackgroundColor={backgroundColor}>
-            {label}
+            {label ? label : ""}
           </StyledOption>
         ))}
       </StyledDropdown>

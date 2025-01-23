@@ -65,9 +65,17 @@ const OrderPage: React.FC = () => {
         dispatch(setOrders(fetchedOrders));
       }
     };
-    setInterval(() => {
+
+    // Run for the first time
+    fetchAndUpdateRedux();
+
+    // Set interval to run every x seconds
+    const intervalId = setInterval(() => {
       fetchAndUpdateRedux();
     }, 5000);
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -175,14 +183,19 @@ const OrderPage: React.FC = () => {
             <StyledOrderPageTitle>
               Pizza S&S.. <IconPizza />
             </StyledOrderPageTitle>
-            <StyledOrderPageSubtitle>The Best Pizza In The World!</StyledOrderPageSubtitle>
+            <StyledOrderPageSubtitle>The Best Pizza In The World!,({orders.length} UnDelivered Orders for now..)</StyledOrderPageSubtitle>
           </div>
           <StyledInputsWrapper>
             <AppTextInput stateProps={searchState} staticsProps={staticsSearch} />
             <div>
               <AppDropdown
                 label="Sort"
-                options={["Date", "Items amount", "Order Id", "None"].map((item) => ({ label: item, value: item }))}
+                options={[
+                  { value: "Date", label: "Date" },
+                  { value: "Items amount", label: "Items amount" },
+                  { value: "Order Id", label: "Order Id" },
+                  { value: "None", label: "None" },
+                ]}
                 onChange={(value) => setSortBy(value as any)}
                 value={sortBy}
               />

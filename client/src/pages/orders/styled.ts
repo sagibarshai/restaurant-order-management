@@ -29,7 +29,7 @@ export const StyledOrderPageTitle = styled.h2`
 `;
 export const StyledOrderPageSubtitle = styled.h4`
   font-size: ${({ theme }) => theme.fonts.sizes.text};
-  font-weight: lighter;
+  font-weight: 300;
   text-align: left;
   color: ${({ theme }) => theme.palette.colors.texts.primary};
   margin: 0;
