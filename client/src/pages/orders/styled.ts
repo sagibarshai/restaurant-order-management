@@ -49,8 +49,8 @@ export const StyledTableAndInfoWrapper = styled.div`
   overflow: hidden;
   display: flex;
 `;
-export const StyledTableWrapper = styled.div<{ showInfo: boolean }>`
-  width: ${({ showInfo }) => (showInfo ? "75%" : "100%")};
+export const StyledTableWrapper = styled.div<{ showinfo: 1 | 0 }>`
+  width: ${({ showinfo }) => (showinfo === 1 ? "75%" : "100%")};
   height: 100%;
   transition: all 0.3s;
 `;

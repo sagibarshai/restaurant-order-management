@@ -9,16 +9,16 @@ export const StyledDropdownWrapper = styled.div`
   position: relative;
 `;
 
-export const StyledDropdown = styled.select<{ backgroundColor?: string }>`
+export const StyledDropdown = styled.select<{ backgroundcolor?: string }>`
   width: 100%;
   height: 100%;
   padding: 8px;
   font-size: ${({ theme }) => theme.fonts.sizes.text};
-  border: 1px solid ${({ theme }) => theme.palette.colors.texts.primary};
-  ${({ theme, backgroundColor }) =>
-    backgroundColor
+  border: none;
+  ${({ theme, backgroundcolor }) =>
+    backgroundcolor
       ? css`
-          background-color: ${backgroundColor};
+          background-color: ${backgroundcolor};
         `
       : css`
           background-color: none;
@@ -46,6 +46,6 @@ export const StyledIconWrapper = styled.div`
   pointer-events: none;
 `;
 
-export const StyledOption = styled.option<{ optionBackgroundColor?: string }>`
-  background-color: ${({ optionBackgroundColor }) => optionBackgroundColor || "transparent"};
+export const StyledOption = styled.option<{ optionbackgroundcolor?: string }>`
+  background-color: ${({ optionbackgroundcolor }) => optionbackgroundcolor || "transparent"};
 `;

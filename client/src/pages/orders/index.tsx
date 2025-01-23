@@ -256,7 +256,7 @@ const OrderPage: React.FC = () => {
             Click on the row to show items
           </StyledInfoWrapper>
           <StyledTableAndInfoWrapper>
-            <StyledTableWrapper showInfo={selectedOrder !== null}>
+            <StyledTableWrapper showinfo={selectedOrder !== null ? 1 : 0}>
               <AppPrimaryTable selectedId={selectedOrder?.id || -1} tableData={tableData} />
             </StyledTableWrapper>
             {selectedOrder ? (

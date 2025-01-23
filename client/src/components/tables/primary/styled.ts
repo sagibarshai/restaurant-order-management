@@ -27,13 +27,13 @@ export const StyledTableHead = styled.th`
   width: 100%;
 `;
 
-export const StyledTableRow = styled.tr<{ isOdd: boolean; isSelected: boolean }>`
+export const StyledTableRow = styled.tr<{ isodd: 1 | 0; isselected: 1 | 0 }>`
   display: table;
   width: 100%;
   table-layout: fixed;
   overflow: hidden;
-  background-color: ${({ theme, isOdd }) => (isOdd ? theme.palette.colors.backgrounds.lightGray : "")};
-  border: ${({ isSelected, theme }) => (isSelected ? `3px solid ${theme.palette.colors.backgrounds.pink}` : "")};
+  background-color: ${({ theme, isodd }) => (isodd === 1 ? theme.palette.colors.backgrounds.lightGray : "")};
+  border: ${({ isselected, theme }) => (isselected === 1 ? `3px solid ${theme.palette.colors.backgrounds.pink}` : "")};
   cursor: pointer;
 `;
 

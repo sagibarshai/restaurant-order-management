@@ -17,9 +17,9 @@ const AppDropdown: React.FC<DropdownProps> = ({ value, onChange, options, label 
   return (
     <StyledDropdownWrapper>
       <StyledDropdownTitle>{label}</StyledDropdownTitle>
-      <StyledDropdown value={value} onChange={handleChange} backgroundColor={backgroundColor}>
+      <StyledDropdown value={value} onChange={handleChange} backgroundcolor={backgroundColor}>
         {options.map(({ value, label, backgroundColor }) => (
-          <StyledOption key={value} value={value} optionBackgroundColor={backgroundColor}>
+          <StyledOption key={value} value={value} optionbackgroundcolor={backgroundColor}>
             {label ? label : ""}
           </StyledOption>
         ))}

@@ -29,8 +29,8 @@ const AppPrimaryTable = <T extends { id: number }>({ tableData, selectedId }: Ap
       <StyledTableBody>
         {tableData[0].children.map((item, rowIndex) => (
           <StyledTableRow
-            isSelected={item.payload?.id === selectedId}
-            isOdd={rowIndex % 2 !== 0}
+            isselected={item.payload?.id === selectedId ? 1 : 0}
+            isodd={rowIndex % 2 !== 0 ? 1 : 0}
             key={rowIndex}
             onClick={() => {
               item.onClick ? item.onClick(item.payload as T) : () => {};
